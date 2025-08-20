@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXPORIMP.CORP - Assinatura de Comércio Internacional</title>
+    <title>EXPORIMP.CORP - Assinatura de Comércio Global</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -27,7 +27,7 @@
         }
         
         .hero-section {
-            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)), url('https://images.unsplash.com/photo-1599305447822-f2342e96a1a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)), url('https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
             background-size: cover;
             background-position: center;
             color: white;
@@ -179,13 +179,95 @@
             padding: 2rem 0;
             text-align: center;
         }
+        
+        .world-map-bg {
+            background: url('https://images.unsplash.com/photo-1485738422979-f5c462d49f74?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            padding: 5rem 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .country-flag {
+            width: 40px;
+            height: 25px;
+            object-fit: cover;
+            border-radius: 2px;
+            margin: 0 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .global-icon {
+            color: #3498db;
+            font-size: 1.8rem;
+            margin-right: 10px;
+        }
+        
+        .plan-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .plan-card {
+            position: relative;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--secondary-color);
+        }
+        
+        .nav-pills .nav-link {
+            color: var(--dark-color);
+        }
+        
+        .discount-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .price-highlight {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .savings-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        /* ESTILOS ADICIONADOS PARA AS ALTERAÇÕES SOLICITADAS */
+        .savings-box h5, 
+        .savings-box p {
+            color: #000 !important;
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">EXPORIMP.CORP</a>
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-globe-americas me-2"></i>EXPORIMP.CORP
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -204,7 +286,7 @@
                         <a class="nav-link" href="#planos">Planos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#lojas">Lojas</a>
+                        <a class="nav-link" href="#paises">Países</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#sobre">Sobre</a>
@@ -222,10 +304,71 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <h1 class="display-4 fw-bold mb-4">Economize até 50% nas compras no Paraguai</h1>
-                    <p class="lead mb-4">Faça parte do clube exclusivo que conecta comerciantes e consumidores às melhores oportunidades além da fronteira</p>
-                    <a href="#planos" class="btn btn-primary btn-lg me-2">Assine Agora</a>
-                    <a href="#como-funciona" class="btn btn-outline-light btn-lg">Saiba Mais</a>
+                    <span class="discount-badge">ECONOMIA DE 50% OU MAIS</span>
+                    <h1 class="display-4 fw-bold mb-4">Compre em qualquer país do mundo com economia</h1>
+                    <p class="lead mb-4">Acesso global a produtos exclusivos com descontos especiais e entrega facilitada para o Brasil</p>
+                    <div class="savings-box text-start">
+                        <h5 class="mb-2">Economia garantida em todas as compras:</h5>
+                        <p class="mb-1"><i class="fas fa-check-circle text-success me-2"></i> <strong>50% ou mais de desconto</strong> no valor total</p>
+                        <p class="mb-1"><i class="fas fa-check-circle text-success me-2"></i> Descontos em <strong>frete internacional</strong></p>
+                        <p class="mb-0"><i class="fas fa-check-circle text-success me-2"></i> Economia em <strong>impostos e taxas</strong></p>
+                    </div>
+                    <a href="#planos" class="btn btn-primary btn-lg me-2 mt-3">Assine Agora</a>
+                    <a href="#como-funciona" class="btn btn-outline-light btn-lg mt-3">Saiba Mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mapa de Países -->
+    <section id="paises" class="world-map-bg">
+        <div class="container">
+            <h2 class="section-title text-white">Acesso Global</h2>
+            <p class="lead mb-5">Conectamos você com lojas ao redor de todo o mundo</p>
+            
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-10">
+                    <div class="d-flex flex-wrap justify-content-center align-items-center gap-3 mb-4">
+                        <img src="https://flagcdn.com/w40/us.png" class="country-flag" alt="Estados Unidos">
+                        <img src="https://flagcdn.com/w40/cn.png" class="country-flag" alt="China">
+                        <img src="https://flagcdn.com/w40/jp.png" class="country-flag" alt="Japão">
+                        <img src="https://flagcdn.com/w40/de.png" class="country-flag" alt="Alemanha">
+                        <img src="https://flagcdn.com/w40/gb.png" class="country-flag" alt="Reino Unido">
+                        <img src="https://flagcdn.com/w40/kr.png" class="country-flag" alt="Coreia do Sul">
+                        <img src="https://flagcdn.com/w40/fr.png" class="country-flag" alt="França">
+                        <img src="https://flagcdn.com/w40/it.png" class="country-flag" alt="Itália">
+                        <img src="https://flagcdn.com/w40/es.png" class="country-flag" alt="Espanha">
+                        <img src="https://flagcdn.com/w40/ae.png" class="country-flag" alt="Emirados Árabes">
+                        <img src="https://flagcdn.com/w40/mx.png" class="country-flag" alt="México">
+                        <img src="https://flagcdn.com/w40/py.png" class="country-flag" alt="Paraguai">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="text-center text-white">
+                        <h3>50+</h3>
+                        <p>Países</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="text-center text-white">
+                        <h3>1000+</h3>
+                        <p>Lojas Parceiras</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="text-center text-white">
+                        <h3>10.000+</h3>
+                        <p>Produtos</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="text-center text-white">
+                        <h3>24h</h3>
+                        <p>Suporte</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -239,10 +382,19 @@
                 <div class="col-md-4 mb-4">
                     <div class="benefit-card">
                         <div class="benefit-icon">
-                            <i class="fas fa-user-plus"></i>
+                            <i class="fas fa-clipboard-list"></i>
                         </div>
-                        <h4>1. Cadastro</h4>
-                        <p>Registre-se com CPF ou CNPJ em nossa plataforma de forma rápida e segura.</p>
+                        <h4>1. Análise de Perfil</h4>
+                        <p>Identificamos seu perfil de consumo e necessidades específicas para recomendar o melhor plano.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h4>2. Definição do Segmento</h4>
+                        <p>Classificamos seu negócio por porte и segmento para oferecer condições personalizadas.</p>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -250,35 +402,26 @@
                         <div class="benefit-icon">
                             <i class="fas fa-credit-card"></i>
                         </div>
-                        <h4>2. Escolha o Plano</h4>
-                        <p>Selecione o plano mensal ou anual que melhor atende suas necessidades.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="fas fa-tags"></i>
-                        </div>
-                        <h4>3. Acesse Vantagens</h4>
-                        <p>Tenha descontos exclusivos e frete grátis em lojas credenciadas no Paraguai.</p>
+                        <h4>3. Escolha do Plano</h4>
+                        <p>Selecione o plano ideal para seu perfil com condições personalizadas.</p>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4">
                     <div class="benefit-card">
                         <div class="benefit-icon">
-                            <i class="fas fa-shopping-cart"></i>
+                            <i class="fas fa-handshake"></i>
                         </div>
-                        <h4>4. Compre com Desconto</h4>
-                        <p>Realize suas compras nas melhores lojas com descontos automáticos.</p>
+                        <h4>4. Ativação da Conta</h4>
+                        <p>Após a aprovação, sua conta é ativada com todos os benefícios do plano escolhido.</p>
                     </div>
                 </div>
                 <div class="col-md-6 mb-4">
                     <div class="benefit-card">
                         <div class="benefit-icon">
-                            <i class="fas fa-truck"></i>
+                            <i class="fas fa-globe-americas"></i>
                         </div>
-                        <h4>5. Receba no Brasil</h4>
-                        <p>Seus produtos são entregues com segurança no endereço indicado.</p>
+                        <h4>5. Acesso Global</h4>
+                        <p>Comece a comprar em marketplaces internacionais com benefícios exclusivos.</p>
                     </div>
                 </div>
             </div>
@@ -289,6 +432,12 @@
     <section id="beneficios" class="py-5">
         <div class="container">
             <h2 class="section-title">Vantagens Exclusivas</h2>
+            
+            <div class="alert alert-success text-center mb-5" role="alert">
+                <h4 class="alert-heading"><i class="fas fa-tag me-2"></i>Economia Mínima Garantida de 50%</h4>
+                <p class="mb-0">Em todas as compras, incluindo produto, frete internacional, impostos e taxas</p>
+            </div>
+            
             <div class="row">
                 <div class="col-lg-6 mb-4">
                     <div class="d-flex mb-4">
@@ -296,8 +445,8 @@
                             <i class="fas fa-percentage fa-2x text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-4">
-                            <h4>Descontos de até 50%</h4>
-                            <p>Acesso a preços especiais em centenas de produtos, desde eletrônicos até vestuário.</p>
+                            <h4>Descontos Internacionais</h4>
+                            <p>Acesso a preços especiais em produtos de diversos países, com economia garantida de 50% ou mais no valor total.</p>
                         </div>
                     </div>
                     <div class="d-flex mb-4">
@@ -305,17 +454,17 @@
                             <i class="fas fa-shipping-fast fa-2x text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-4">
-                            <h4>Frete Grátis ou Reduzido</h4>
-                            <p>Economize no transporte com fretes gratuitos ou com valores especiais para assinantes.</p>
+                            <h4>Frete Internacional Facilitado</h4>
+                            <p>Logística simplificada com custos reduzidos para importação de qualquer país. Economia garantida em fretes.</p>
                         </div>
                     </div>
                     <div class="d-flex mb-4">
                         <div class="flex-shrink-0">
-                            <i class="fas fa-gift fa-2x text-primary"></i>
+                            <i class="fas fa-file-invoice-dollar fa-2x text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-4">
-                            <h4>Cashback e Pontos</h4>
-                            <p>Acumule pontos em cada compra que podem ser trocados por descontos futuros.</p>
+                            <h4>Impostos e Taxas Reduzidos</h4>
+                            <p>Economia de 50% ou mais em todos os custos adicionais, incluindo impostos de importação e taxas alfandegárias.</p>
                         </div>
                     </div>
                 </div>
@@ -325,8 +474,8 @@
                             <i class="fas fa-store fa-2x text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-4">
-                            <h4>Lojas Credenciadas</h4>
-                            <p>Parcerias com as melhores lojas de Ciudad del Este e outras cidades paraguaias.</p>
+                            <h4>Lojas ao Redor do Mundo</h4>
+                            <p>Parcerias com as melhores lojas dos Estados Unidos, China, Europa e muitos outros países.</p>
                         </div>
                     </div>
                     <div class="d-flex mb-4">
@@ -334,8 +483,8 @@
                             <i class="fas fa-shield-alt fa-2x text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-4">
-                            <h4>Compra Segura</h4>
-                            <p>Proteção garantida em todas as transações e suporte especializado.</p>
+                            <h4>Compra Segura Internacional</h4>
+                            <p>Proteção garantida em todas as transações internacionais e suporte especializado.</p>
                         </div>
                     </div>
                     <div class="d-flex mb-4">
@@ -343,8 +492,8 @@
                             <i class="fas fa-bolt fa-2x text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-4">
-                            <h4>Ofertas Exclusivas</h4>
-                            <p>Acesso antecipado a promoções e liquidações especiais.</p>
+                            <h4>Ofertas Exclusivas Globais</h4>
+                            <p>Acesso antecipado a promoções e liquidações especiais em diversos países.</p>
                         </div>
                     </div>
                 </div>
@@ -357,8 +506,8 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h3 class="mb-0">Frete grátis no primeiro mês para novas assinaturas!</h3>
-                    <p class="mb-0">Oferta por tempo limitado</p>
+                    <h3 class="mb-1">Economia de 50% ou mais garantida em todas as compras!</h3>
+                    <p class="mb-0">Incluindo produto, frete internacional, impostos e taxas</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <a href="#planos" class="btn btn-light btn-lg">Aproveitar Agora</a>
@@ -370,95 +519,156 @@
     <!-- Planos e Preços -->
     <section id="planos" class="py-5 bg-light">
         <div class="container">
-            <h2 class="section-title">Planos e Preços</h2>
-            <p class="text-center mb-5">Escolha o plano ideal para suas necessidades e comece a economizar hoje mesmo</p>
+            <h2 class="section-title">Planos Personalizados</h2>
+            <p class="text-center mb-5">Oferecemos soluções personalizadas de acordo com seu perfil e necessidades</p>
             
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-5 mb-4">
-                    <div class="plan-card">
-                        <div class="plan-header">
-                            <h3>Plano Mensal</h3>
-                            <div class="plan-price">R$ 49,90<span>/mês</span></div>
-                            <p>Ideal para quem quer testar</p>
-                        </div>
-                        <div class="plan-features">
-                            <ul>
-                                <li><i class="fas fa-check text-success me-2"></i> Descontos de até 40%</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Frete com 50% de desconto</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Acesso a todas as lojas</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Cashback de 2%</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Suporte prioritário</li>
-                            </ul>
-                            <div class="text-center mt-4">
-                                <a href="#" class="btn btn-primary">Assinar Agora</a>
+            <ul class="nav nav-pills mb-4 justify-content-center" id="planosTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pessoafisica-tab" data-bs-toggle="pill" data-bs-target="#pessoafisica" type="button" role="tab">Pessoa Física</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="empresas-tab" data-bs-toggle="pill" data-bs-target="#empresas" type="button" role="tab">Empresas</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="planosTabContent">
+                <div class="tab-pane fade show active" id="pessoafisica" role="tabpanel">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-6">
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h3>Plano Individual</h3>
+                                    <p>Ideal para compras pessoais e pequenos volumes</p>
+                                    <div class="plan-price">
+                                        <span class="price-highlight">R$ 49,99</span>/mês
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <ul>
+                                        <li><i class="fas fa-check text-success me-2"></i> <strong>Economia de 50% ou mais</strong> em todas as compras</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Descontos em fretes internacionais</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Redução de impostos e taxas</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Acesso a marketplaces em 20 países</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Suporte especializado</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Limite de compra mensal</li>
+                                    </ul>
+                                    <div class="text-center mt-4">
+                                        <a href="#" class="btn btn-primary">Assinar Agora</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-md-6 col-lg-5 mb-4">
-                    <div class="plan-card">
-                        <div class="plan-header bg-danger">
-                            <h3>Plano Anual</h3>
-                            <div class="plan-price">R$ 499,90<span>/ano</span></div>
-                            <p>Economize 2 meses</p>
+                <div class="tab-pane fade" id="empresas" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="plan-card">
+                                <span class="plan-badge">Pequeno Porte</span>
+                                <div class="plan-header">
+                                    <h3>Plano Essentials</h3>
+                                    <p>Para pequenas empresas e startups</p>
+                                </div>
+                                <div class="plan-features">
+                                    <ul>
+                                        <li><i class="fas fa-check text-success me-2"></i> <strong>Economia de 50% ou mais</strong> em todas as compras</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Descontos em fornecedores internacionais</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Logística simplificada</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Acesso a marketplaces estratégicos</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Suporte prioritário</li>
+                                    </ul>
+                                    <div class="text-center mt-4">
+                                        <a href="#" class="btn btn-primary">Plano Personalizado para seu segmento</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="plan-features">
-                            <ul>
-                                <li><i class="fas fa-check text-success me-2"></i> Descontos de até 50%</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Frete grátis ilimitado</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Acesso a todas as lojas</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Cashback de 5%</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Suporte VIP 24/7</li>
-                                <li><i class="fas fa-check text-success me-2"></i> Acesso a eventos exclusivos</li>
-                            </ul>
-                            <div class="text-center mt-4">
-                                <a href="#" class="btn btn-danger">Assinar Agora</a>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="plan-card">
+                                <span class="plan-badge">Médio Porte</span>
+                                <div class="plan-header">
+                                    <h3>Plano Business</h3>
+                                    <p>Para empresas em crescimento</p>
+                                </div>
+                                <div class="plan-features">
+                                    <ul>
+                                        <li><i class="fas fa-check text-success me-2"></i> <strong>Economia de 50% ou mais</strong> em todas as compras</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Todos os benefícios do plano Essentials</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Maiores descontos em volume</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Acesso a mais países e fornecedores</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Suporte dedicado</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Análise de mercado internacional</li>
+                                    </ul>
+                                    <div class="text-center mt-4">
+                                        <a href="#" class="btn btn-primary">Plano Personalizado para seu segmento</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="plan-card">
+                                <span class="plan-badge">Grande Porte</span>
+                                <div class="plan-header">
+                                    <h3>Plano Enterprise</h3>
+                                    <p>Para corporações e grandes volumes</p>
+                                </div>
+                                <div class="plan-features">
+                                    <ul>
+                                        <li><i class="fas fa-check text-success me-2"></i> <strong>Economia de 50% ou mais</strong> em todas as compras</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Todos os benefícios do plano Business</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Condições especiais negociadas</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Acesso global completo</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Gerente de conta dedicado</li>
+                                        <li><i class="fas fa-check text-success me-2"></i> Análises de mercado personalizadas</li>
+                                    </ul>
+                                    <div class="text-center mt-4">
+                                        <a href="#" class="btn btn-primary">Plano Personalizado para seu segmento</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Lojas Credenciadas -->
-    <section id="lojas" class="py-5">
-        <div class="container">
-            <h2 class="section-title">Lojas Credenciadas</h2>
-            <p class="text-center mb-5">Parcerias com as melhores lojas do Paraguai em diversas categorias</p>
-            
-            <div class="row text-center">
-                <div class="col-6 col-md-3 mb-4">
-                    <h5>Eletrônicos</h5>
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+1" alt="Loja de Eletrônicos" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+2" alt="Loja de Eletrônicos" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+3" alt="Loja de Eletrônicos" class="store-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mb-4">
-                    <h5>Vestuário</h5>
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+4" alt="Loja de Roupas" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+5" alt="Loja de Roupas" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+6" alt="Loja de Roupas" class="store-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mb-4">
-                    <h5>Bebidas</h5>
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+7" alt="Loja de Bebidas" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+8" alt="Loja de Bebidas" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+9" alt="Loja de Bebidas" class="store-logo">
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mb-4">
-                    <h5>Cosméticos</h5>
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+10" alt="Loja de Cosméticos" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+11" alt="Loja de Cosméticos" class="store-logo">
-                        <img src="https://via.placeholder.com/100x50?text=Loja+12" alt="Loja de Cosméticos" class="store-logo">
+                    
+                    <div class="row mt-5">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h4>Planos Segmentados por Área de Atuação</h4>
+                                    <p>Oferecemos condições especiais de acordo com seu segmento:</p>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <i class="fas fa-microchip fa-2x mb-2 text-primary"></i>
+                                            <h6>Tecnologia</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <i class="fas fa-pills fa-2x mb-2 text-primary"></i>
+                                            <h6>Matéria-prima</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <i class="fas fa-tshirt fa-2x mb-2 text-primary"></i>
+                                            <h6>Varejo</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <i class="fas fa-tools fa-2x mb-2 text-primary"></i>
+                                            <h6>Industrial</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <i class="fas fa-seedling fa-2x mb-2 text-primary"></i>
+                                            <h6>Agronegócio</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <i class="fas fa-heartbeat fa-2x mb-2 text-primary"></i>
+                                            <h6>Saúde</h6>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3">Entre em contato para um plano personalizado para seu segmento</p>
+                                    <a href="#sobre" class="btn btn-outline-primary">Fale Conosco</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -471,19 +681,22 @@
             <h2 class="section-title">Sobre Nós</h2>
             <div class="row">
                 <div class="col-lg-6 mb-4">
-                    <h4>Nossa Missão</h4>
-                    <p>Facilitar o comércio transfronteiriço entre Brasil e Paraguai, oferecendo acesso a produtos de qualidade com preços competitivos e garantindo segurança em todas as etapas do processo.</p>
+                    <h4>Nossa Missão Global</h4>
+                    <p>Facilitar o comércio internacional, oferecendo acesso a produtos de diversos países com preços competitivos e garantindo segurança em todas as etapas do processo de importação.</p>
                     
-                    <h4>Segurança e Confiabilidade</h4>
-                    <p>Todas as transações são protegidas com criptografia avançada. Trabalhamos apenas com lojas verificadas e oferecemos suporte especializado para resolver qualquer problema.</p>
+                    <div class="savings-box">
+                        <h5>Economia Garantida</h5>
+                        <p class="mb-0">Garantimos <strong>50% ou mais de economia</strong> em todas as compras, incluindo produto, frete internacional, impostos e taxas, independente do valor ou tipo de equipamento.</p>
+                    </div>
                 </div>
                 <div class="col-lg-6 mb-4">
                     <h4>Contato</h4>
                     <p>Estamos disponíveis para esclarecer dúvidas e ajudar no que for necessário:</p>
                     <ul class="list-unstyled">
-                        <li><i class="fas fa-envelope me-2"></i> contato@fronteiraclub.com</li>
+                        <li><i class="fas fa-envelope me-2"></i> contato@exporimp.corp.com</li>
                         <li><i class="fas fa-phone me-2"></i> (45) 9 9999-9999</li>
                         <li><i class="fas fa-clock me-2"></i> Segunda a sexta, 8h às 18h</li>
+                        <li><i class="fas fa-globe me-2"></i> Suporte internacional 24/7 para assinantes premium</li>
                     </ul>
                     
                     <div class="social-links mt-4">
@@ -502,8 +715,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mb-4">
-                    <h5>EXPORIMP.CORP</h5>
-                    <p>Sua ponte para economizar nas compras no Paraguai.</p>
+                    <h5><i class="fas fa-globe-americas me-2"></i>EXPORIMP.CORP</h5>
+                    <p>Sua conexão global para economizar em compras internacionais.</p>
                 </div>
                 <div class="col-md-3 mb-4">
                     <h5>Links Rápidos</h5>

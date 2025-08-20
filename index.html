@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Importação Paraguai → Brasil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1599305447822-f2342e96a1a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .result-card {
+            background-color: var(--light-color);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .tax-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .admin-panel {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            
+            .display-4 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">EXPORIMP.CORP</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Simulação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="adminLink" style="display:none;">Administração</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div id="authButtons">
+                        <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                        <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#registerModal">Registrar</button>
+                    </div>
+                    <div id="userInfo" style="display:none;">
+                        <span class="text-light me-2" id="userEmail"></span>
+                        <button class="btn btn-outline-light" id="logoutButton">Sair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Simulador de Importação</h1>
+            <p class="lead">Paraguai → Brasil</p>
+            <p>Calcule impostos, taxas e custos para sua importação</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Simulation Form -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Simular Importação</h3>
+                        <form id="simulationForm">
+                            <div class="mb-3">
+                                <label for="product" class="form-label">Produto ou NCM</label>
+                                <input type="text" class="form-control" id="product" required 
+                                       placeholder="Digite o nome do produto ou código NCM">
+                                <div class="form-text">Exemplos: Smartphone, 8517.12.00</div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="value" class="form-label">Valor da Compra</label>
+                                    <input type="number" class="form-control" id="value" step="0.01" required 
+                                           placeholder="Valor em dólares ou guaranis">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="currency" class="form-label">Moeda</label>
+                                    <select class="form-select" id="currency">
+                                        <option value="USD">Dólar Americano (USD)</option>
+                                        <option value="PYG">Guarani Paraguaio (PYG)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="state" class="form-label">Estado de Destino</label>
+                                <select class="form-select" id="state" required>
+                                    <option value="">Selecione um estado</option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">Calcular Importação</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div class="card result-card mb-4" id="resultsCard" style="display: none;">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Resultado da Simulação</h3>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>Resumo</h5>
+                            <button class="btn btn-sm btn-outline-secondary" id="exportPdf">Exportar PDF</button>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p><strong>Produto:</strong> <span id="resultProduct"></span></p>
+                                <p><strong>Valor original:</strong> <span id="resultOriginalValue"></span></p>
+                                <p><strong>Estado destino:</strong> <span id="resultState"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Valor em BRL:</strong> <span id="resultValueBRL"></span></p>
+                                <p><strong>Total impostos:</strong> <span id="resultTotalTaxes"></span></p>
+                                <p><strong>Custo total:</strong> <span id="resultTotalCost"></span></p>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-3">Detalhamento de Impostos</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Imposto</th>
+                                        <th>Alíquota</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="taxDetails">
+                                    <!-- Tax details will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">Licenças Obrigatórias</h5>
+                        <div id="licensesRequired">
+                            <!-- Licenses will be inserted here -->
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">Margem Recomendada para Revenda</h5>
+                        <div class="alert alert-info">
+                            <p>Para obter uma margem de lucro de 30% após todos os custos, 
+                            recomenda-se revender o produto por: <strong id="recommendedPrice"></strong></p>
+                            <p class="mb-0">Sua margem líquida estimada será de: <strong id="profitMargin"></strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Admin Panel (initially hidden) -->
+                <div class="admin-panel" id="adminPanel" style="display: none;">
+                    <h3 class="mb-4">Painel de Administração</h3>
+                    
+                    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">Produtos</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="taxes-tab" data-bs-toggle="tab" data-bs-target="#taxes" type="button" role="tab">Regras Tributárias</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content p-3 border-start border-end border-bottom" id="adminTabContent">
+                        <div class="tab-pane fade show active" id="products" role="tabpanel">
+                            <h5 class="mb-3">Gerenciar Produtos e NCMs</h5>
+                            <form id="productForm" class="mb-4">
+                                <div class="row">
+                                    <div class="col-md-5 mb-3">
+                                        <input type="text" class="form-control" id="productName" placeholder="Nome do produto" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <input type="text" class="form-control" id="productNCM" placeholder="Código NCM" required>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <button type="submit" class="btn btn-primary w-100">Adicionar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Produto</th>
+                                            <th>NCM</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productsList">
+                                        <!-- Products will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="taxes" role="tabpanel">
+                            <h5 class="mb-3">Gerenciar Regras Tributárias</h5>
+                            <form id="taxRuleForm" class="mb-4">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <input type="text" class="form-control" id="taxNCM" placeholder="Código NCM" required>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <input type="number" class="form-control" id="taxII" step="0.1" placeholder="II %" required>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <input type="number" class="form-control" id="taxIPI" step="0.1" placeholder="IPI %" required>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <input type="number" class="form-control" id="taxPIS" step="0.1" placeholder="PIS %" required>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <input type="number" class="form-control" id="taxCOFINS" step="0.1" placeholder="COFINS %" required>
+                                    </div>
+                                    <div class="col-md-1 mb-3">
+                                        <button type="submit" class="btn btn-primary w-100">+</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>NCM</th>
+                                            <th>II</th>
+                                            <th>IPI</th>
+                                            <th>PIS</th>
+                                            <th>COFINS</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="taxRulesList">
+                                        <!-- Tax rules will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>Simulador de Importação Paraguai → Brasil</p>
+            <p>Este é um sistema de simulação. Consulte um especialista para valores exatos.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Criar Conta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPasswordConfirm" class="form-label">Confirmar Senha</label>
+                            <input type="password" class="form-control" id="registerPasswordConfirm" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Criar Conta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY",
+            authDomain: "seu-projeto.firebaseapp.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "seu-app-id"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM elements
+        const simulationForm = document.getElementById('simulationForm');
+        const resultsCard = document.getElementById('resultsCard');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const logoutButton = document.getElementById('logoutButton');
+        const authButtons = document.getElementById('authButtons');
+        const userInfo = document.getElementById('userInfo');
+        const userEmail = document.getElementById('userEmail');
+        const adminLink = document.getElementById('adminLink');
+        const adminPanel = document.getElementById('adminPanel');
+        const productForm = document.getElementById('productForm');
+        const taxRuleForm = document.getElementById('taxRuleForm');
+        const productsList = document.getElementById('productsList');
+        const taxRulesList = document.getElementById('taxRulesList');
+        const exportPdfButton = document.getElementById('exportPdf');
+        
+        // Sample data for demonstration
+        const sampleProducts = [
+            { name: "Smartphone", ncm: "8517.12.00" },
+            { name: "Notebook", ncm: "8471.30.10" },
+            { name: "Tablet", ncm: "8471.30.90" }
+        ];
+        
+        const sampleTaxRules = [
+            { ncm: "8517.12.00", ii: 16, ipi: 15, pis: 2.1, cofins: 9.65 },
+            { ncm: "8471.30.10", ii: 16, ipi: 15, pis: 2.1, cofins: 9.65 },
+            { ncm: "8471.30.90", ii: 16, ipi: 15, pis: 2.1, cofins: 9.65 }
+        ];
+        
+        const stateICMS = {
+            "AC": 17, "AL": 18, "AM": 18, "AP": 18, "BA": 18, 
+            "CE": 18, "DF": 18, "ES": 17, "GO": 17, "MA": 18, 
+            "MT": 17, "MS": 17, "MG": 18, "PA": 17, "PB": 18, 
+            "PR": 18, "PE": 18, "PI": 18, "RJ": 20, "RN": 18, 
+            "RS": 18, "RO": 17.5, "RR": 17, "SC": 17, "SP": 18, 
+            "SE": 18, "TO": 18
+        };
+        
+        const licenseRequirements = {
+            "8517.12.00": ["Anatel"],
+            "8471.30.10": ["Anatel", "Inmetro"],
+            "8471.30.90": ["Anatel", "Inmetro"]
+        };
+        
+        // Currency conversion rates (example values)
+        const exchangeRates = {
+            USD: 5.20, // 1 USD = 5.20 BRL
+            PYG: 0.00071 // 1 PYG = 0.00071 BRL
+        };
+        
+        // Authentication state observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                authButtons.style.display = 'none';
+                userInfo.style.display = 'flex';
+                userEmail.textContent = user.email;
+                
+                // Check if user is admin (for demo purposes, any logged in user is admin)
+                adminLink.style.display = 'block';
+                
+                // Load admin data
+                loadProducts();
+                loadTaxRules();
+            } else {
+                // User is signed out
+                authButtons.style.display = 'flex';
+                userInfo.style.display = 'none';
+                adminLink.style.display = 'none';
+                adminPanel.style.display = 'none';
+            }
+        });
+        
+        // Login form handler
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                    modal.hide();
+                    loginForm.reset();
+                })
+                .catch((error) => {
+                    alert('Erro no login: ' + error.message);
+                });
+        });
+        
+        // Register form handler
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerPasswordConfirm').value;
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem');
+                return;
+            }
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+                    modal.hide();
+                    registerForm.reset();
+                })
+                .catch((error) => {
+                    alert('Erro no registro: ' + error.message);
+                });
+        });
+        
+        // Logout handler
+        logoutButton.addEventListener('click', () => {
+            auth.signOut();
+        });
+        
+        // Admin link handler
+        adminLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // Simulation form handler
+        simulationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const productInput = document.getElementById('product').value;
+            const value = parseFloat(document.getElementById('value').value);
+            const currency = document.getElementById('currency').value;
+            const state = document.getElementById('state').value;
+            
+            // Find product by name or NCM
+            let product = sampleProducts.find(p => 
+                p.name.toLowerCase().includes(productInput.toLowerCase()) || 
+                p.ncm.includes(productInput)
+            );
+            
+            if (!product) {
+                alert('Produto não encontrado. Usando valores padrão.');
+                product = { name: productInput, ncm: "0000.00.00" };
+            }
+            
+            // Find tax rules for the product's NCM
+            let taxRule = sampleTaxRules.find(rule => rule.ncm === product.ncm);
+            
+            if (!taxRule) {
+                alert('Regra tributária não encontrada para o NCM. Usando valores padrão.');
+                taxRule = { ncm: product.ncm, ii: 16, ipi: 15, pis: 2.1, cofins: 9.65 };
+            }
+            
+            // Convert value to BRL
+            const valueBRL = value * exchangeRates[currency];
+            
+            // Calculate taxes
+            const ii = valueBRL * (taxRule.ii / 100);
+            const ipi = valueBRL * (taxRule.ipi / 100);
+            const pis = valueBRL * (taxRule.pis / 100);
+            const cofins = valueBRL * (taxRule.cofins / 100);
+            
+            // Calculate ICMS (simplified calculation)
+            const icmsRate = stateICMS[state] || 18;
+            const icms = valueBRL * (icmsRate / 100);
+            
+            // Calculate total taxes and total cost
+            const totalTaxes = ii + ipi + pis + cofins + icms;
+            const totalCost = valueBRL + totalTaxes;
+            
+            // Get license requirements
+            const licenses = licenseRequirements[product.ncm] || [];
+            
+            // Calculate recommended selling price (30% profit margin)
+            const recommendedPrice = totalCost * 1.3;
+            const profitMargin = ((recommendedPrice - totalCost) / recommendedPrice * 100).toFixed(2);
+            
+            // Display results
+            document.getElementById('resultProduct').textContent = `${product.name} (NCM: ${product.ncm})`;
+            document.getElementById('resultOriginalValue').textContent = `${value} ${currency}`;
+            document.getElementById('resultState').textContent = state;
+            document.getElementById('resultValueBRL').textContent = `R$ ${valueBRL.toFixed(2)}`;
+            document.getElementById('resultTotalTaxes').textContent = `R$ ${totalTaxes.toFixed(2)}`;
+            document.getElementById('resultTotalCost').textContent = `R$ ${totalCost.toFixed(2)}`;
+            
+            // Display tax details
+            const taxDetails = document.getElementById('taxDetails');
+            taxDetails.innerHTML = `
+                <tr>
+                    <td>Imposto de Importação (II)</td>
+                    <td>${taxRule.ii}%</td>
+                    <td>R$ ${ii.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>IPI</td>
+                    <td>${taxRule.ipi}%</td>
+                    <td>R$ ${ipi.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>PIS</td>
+                    <td>${taxRule.pis}%</td>
+                    <td>R$ ${pis.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>COFINS</td>
+                    <td>${taxRule.cofins}%</td>
+                    <td>R$ ${cofins.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>ICMS (${state})</td>
+                    <td>${icmsRate}%</td>
+                    <td>R$ ${icms.toFixed(2)}</td>
+                </tr>
+            `;
+            
+            // Display license requirements
+            const licensesContainer = document.getElementById('licensesRequired');
+            if (licenses.length > 0) {
+                licensesContainer.innerHTML = `
+                    <div class="alert alert-warning">
+                        <p>Licenças obrigatórias para este produto:</p>
+                        <ul>
+                            ${licenses.map(license => `<li>${license}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } else {
+                licensesContainer.innerHTML = `
+                    <div class="alert alert-success">
+                        Não são necessárias licenças específicas para este produto.
+                    </div>
+                `;
+            }
+            
+            // Display recommended price
+            document.getElementById('recommendedPrice').textContent = `R$ ${recommendedPrice.toFixed(2)}`;
+            document.getElementById('profitMargin').textContent = `${profitMargin}%`;
+            
+            // Show results card
+            resultsCard.style.display = 'block';
+        });
+        
+        // Product form handler
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('productName').value;
+            const ncm = document.getElementById('productNCM').value;
+            
+            // In a real app, we would save to Firestore
+            sampleProducts.push({ name, ncm });
+            loadProducts();
+            productForm.reset();
+        });
+        
+        // Tax rule form handler
+        taxRuleForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const ncm = document.getElementById('taxNCM').value;
+            const ii = parseFloat(document.getElementById('taxII').value);
+            const ipi = parseFloat(document.getElementById('taxIPI').value);
+            const pis = parseFloat(document.getElementById('taxPIS').value);
+            const cofins = parseFloat(document.getElementById('taxCOFINS').value);
+            
+            // In a real app, we would save to Firestore
+            sampleTaxRules.push({ ncm, ii, ipi, pis, cofins });
+            loadTaxRules();
+            taxRuleForm.reset();
+        });
+        
+        // Export to PDF handler
+        exportPdfButton.addEventListener('click', () => {
+            alert("Funcionalidade de exportação PDF será implementada aqui.");
+            // In a real implementation, we would use jsPDF to generate a PDF
+        });
+        
+        // Load products for admin panel
+        function loadProducts() {
+            productsList.innerHTML = '';
+            sampleProducts.forEach((product, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.ncm}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProduct(${index})">Excluir</button>
+                    </td>
+                `;
+                productsList.appendChild(row);
+            });
+        }
+        
+        // Load tax rules for admin panel
+        function loadTaxRules() {
+            taxRulesList.innerHTML = '';
+            sampleTaxRules.forEach((rule, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${rule.ncm}</td>
+                    <td>${rule.ii}%</td>
+                    <td>${rule.ipi}%</td>
+                    <td>${rule.pis}%</td>
+                    <td>${rule.cofins}%</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteTaxRule(${index})">Excluir</button>
+                    </td>
+                `;
+                taxRulesList.appendChild(row);
+            });
+        }
+        
+        // Delete product (for demo purposes)
+        window.deleteProduct = function(index) {
+            sampleProducts.splice(index, 1);
+            loadProducts();
+        };
+        
+        // Delete tax rule (for demo purposes)
+        window.deleteTaxRule = function(index) {
+            sampleTaxRules.splice(index, 1);
+            loadTaxRules();
+        };
+        
+        // Initialize the page
+        loadProducts();
+        loadTaxRules();
+    </script>
+</body>
+</html>
